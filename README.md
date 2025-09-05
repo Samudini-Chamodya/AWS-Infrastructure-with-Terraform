@@ -35,7 +35,10 @@ We created a custom VPC with a public subnet.
 - Route Table configured to route traffic from subnet to the internet  
 
 **Screenshots:**  
-![VPC](screenshots/vpc.png)  
+**Create VPC**
+![VPC](screenshots/vpc.png)
+
+**Create Subnet & Router Table**
 ![Subnet and Route Table](screenshots/route-table.png)  
 
 **Information:**  
@@ -51,6 +54,7 @@ Security Group created to control inbound/outbound traffic:
 - **Outbound:** All traffic allowed  
 
 **Screenshot:**  
+**Create Security Groups**
 ![Security Group](screenshots/security-groups.png)  
 
 **Information:**  
@@ -65,6 +69,7 @@ Security groups act as a virtual firewall. Opening only required ports ensures s
 - Security group attached for web and SSH access  
 
 **Screenshot:**  
+**Create EC2**
 ![EC2 Instance](screenshots/ec2.png)  
 
 **Information:**  
@@ -78,7 +83,10 @@ EC2 provides scalable compute resources. Key pair ensures secure password-less a
 - Versioning enabled to track changes over time  
 
 **Screenshots:**  
+**Create S3 Bucket**
 ![S3 Bucket](screenshots/s3.png)  
+
+**Configuration Backent S3**
 ![Backend Configuration](screenshots/s3-backend-seting.png)  
 
 **Information:**  
@@ -92,7 +100,10 @@ Remote state in S3 centralizes infrastructure info, avoids conflicts, and keeps 
 - Ensures only one person modifies infrastructure at a time  
 
 **Screenshots:**  
+**Create Dynamodb Table**
 ![DynamoDB Table](screenshots/dynamodb.png)  
+
+**Dynamodb State Lock**
 ![Lock Management](screenshots/lock-dynamodb.png)  
 
 **Information:**  
@@ -108,8 +119,11 @@ Open two terminals, run `terraform apply` in one, then `terraform plan` in the o
 **Unlock:**  
 Use `terraform force-unlock <LOCK_ID>` or manually remove lock from DynamoDB.  
 
-**Screenshots:**  
+**Screenshots:** 
+**Show Locking**
 ![Locking](screenshots/locking.png)  
+
+**Force Unlock **
 ![Force Unlock](screenshots/force-unlock.png)  
 
 **Information:**  
@@ -130,6 +144,7 @@ Terraform state files should **never** be version-controlled:
 ✅ Instead: Use **S3 backend** + **DynamoDB locks**  
 
 **Screenshot:**  
+**Terraform state in S3**
 ![State in S3](screenshots/state_view_in_s3.png)  
 
 ---
