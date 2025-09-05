@@ -1,4 +1,4 @@
-# AWS Infrastructure with Terraform
+# Terraform-based AWS Infrastructure with S3 & DynamoDB
 
 This project demonstrates how to create AWS infrastructure using Terraform with a **modular design**, **remote state management in S3**, and **state locking with DynamoDB**.
 
