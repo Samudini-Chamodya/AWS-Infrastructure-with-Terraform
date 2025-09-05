@@ -18,40 +18,6 @@ The infrastructure provisions:
 ![Shows AWS Infrastructure Flow](screenshots/chart.png) 
 
 
-📂 Project Structure
-
-Entertainment_app/
-        ├── modules/
-        │   ├── ec2/
-        │   │   ├── main.tf
-        │   │   ├── outputs.tf
-        │   │   └── variables.tf
-        │   ├── security_group/
-        │   │   ├── main.tf
-        │   │   ├── outputs.tf
-        │   │   └── variables.tf
-        │   └── vpc/
-        │       ├── main.tf
-        │       ├── outputs.tf
-        │       └── variables.tf
-        ├── diagrams/
-        │   └── aws-mindmap.png
-        ├── screenshots/
-        │   ├── terraform-plan.png
-        │   ├── terraform-apply.png
-        │   ├── s3-backend.png
-        │   ├── dynamodb-lock.png
-        │   ├── force-unlock.png
-        │   ├── ec2-instance.png
-        │   ├── security-group.png
-        │   └── s3-state-view.png
-        ├── backend.tf
-        ├── main.tf
-        ├── variables.tf
-        ├── terraform.tfvars
-        └── README.md
-
-
 ⚙️ Prerequisites
 
 Terraform installed
