@@ -1,92 +1,65 @@
-AWS Infrastructure with Terraform
+# AWS Infrastructure with Terraform
 
-This project demonstrates how to create AWS infrastructure using Terraform with a modular design, remote state management in Amazon S3, and state locking with DynamoDB.
+This project demonstrates how to create AWS infrastructure using Terraform with a **modular design**, **remote state management in S3**, and **state locking with DynamoDB**.
 
 The infrastructure provisions:
 
-    A custom VPC with a public subnet
+- A custom VPC with a public subnet
+- Internet Gateway and Route Table
+- Security Group for web + SSH traffic
+- EC2 instance with key pair authentication
+- S3 bucket for Terraform state storage
+- DynamoDB table for state locking
 
-    Internet Gateway and Route Table
-
-    Security Group for web + SSH traffic
-
-    EC2 instance with key pair authentication
-
-    S3 bucket for Terraform state storage
-
-    DynamoDB table for state locking
+---
 
 
 📌 Architecture Diagram
-AWS Infrastructure Flow
-
-┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐
-│   Terraform     │──────▶│   S3 Backend    │──────▶│  State Files    │
-│   Configuration │       │   (state store) │       │                 │
-└─────────────────┘       └─────────────────┘       └─────────────────┘
-         │                          │
-         │                          ▼
-         │                  ┌─────────────────┐
-         │                  │   DynamoDB      │
-         │                  │   (state lock)  │
-         │                  └─────────────────┘
-         │
-         ▼
-┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐
-│   VPC Module    │──────▶│   Security      │──────▶│   EC2 Module    │
-│                 │       │   Group Module  │       │                 │
-└─────────────────┘       └─────────────────┘       └─────────────────┘
-         │                          │                          │
-         ▼                          ▼                          ▼
-┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐
-│   VPC           │       │   Security      │       │   EC2 Instance  │
-│   Subnet        │       │   Group         │       │                 │
-│   Gateway       │       │                 │       │                 │
-│   Route Table   │       │                 │       │                 │
-└─────────────────┘       └─────────────────┘       └─────────────────┘
+![Shows AWS Infrastructure Flow](screenshots/chart.png) 
 
 
 📂 Project Structure
-    Entertainment_app/
-    ├── modules/
-    │   ├── ec2/
-    │   │   ├── main.tf
-    │   │   ├── outputs.tf
-    │   │   └── variables.tf
-    │   ├── security_group/
-    │   │   ├── main.tf
-    │   │   ├── outputs.tf
-    │   │   └── variables.tf
-    │   └── vpc/
-    │       ├── main.tf
-    │       ├── outputs.tf
-    │       └── variables.tf
-    ├── diagrams/
-    │   └── aws-mindmap.png
-    ├── screenshots/
-    │   ├── terraform-plan.png
-    │   ├── terraform-apply.png
-    │   ├── s3-backend.png
-    │   ├── dynamodb-lock.png
-    │   ├── force-unlock.png
-    │   ├── ec2-instance.png
-    │   ├── security-group.png
-    │   └── s3-state-view.png
-    ├── backend.tf
-    ├── main.tf
-    ├── variables.tf
-    ├── terraform.tfvars
-    └── README.md
+
+Entertainment_app/
+        ├── modules/
+        │   ├── ec2/
+        │   │   ├── main.tf
+        │   │   ├── outputs.tf
+        │   │   └── variables.tf
+        │   ├── security_group/
+        │   │   ├── main.tf
+        │   │   ├── outputs.tf
+        │   │   └── variables.tf
+        │   └── vpc/
+        │       ├── main.tf
+        │       ├── outputs.tf
+        │       └── variables.tf
+        ├── diagrams/
+        │   └── aws-mindmap.png
+        ├── screenshots/
+        │   ├── terraform-plan.png
+        │   ├── terraform-apply.png
+        │   ├── s3-backend.png
+        │   ├── dynamodb-lock.png
+        │   ├── force-unlock.png
+        │   ├── ec2-instance.png
+        │   ├── security-group.png
+        │   └── s3-state-view.png
+        ├── backend.tf
+        ├── main.tf
+        ├── variables.tf
+        ├── terraform.tfvars
+        └── README.md
+
 
 ⚙️ Prerequisites
 
-Terraform
- installed
+Terraform installed
 
-AWS CLI
- installed & configured
+AWS CLI installed & configured
 
 AWS account with permissions for EC2, VPC, S3, DynamoDB
+
 
 1️⃣ Create a Custom VPC
 
@@ -98,9 +71,10 @@ A Route Table was configured to route traffic from the subnet to the internet.
 
 Screenshot:
 
-!(screenshots/vpc.png) → Shows the VPC in AWS console
+![Shows the VPC in AWS console](screenshots/vpc.png) 
 
-!(screenshots/route-table.png)→ Shows subnet and route table association
+![Shows subnet and route table association
+](screenshots/route-table.png)
 
 Information:
 The VPC allows us to isolate resources and control network traffic. Public subnet ensures EC2 instances can access the internet.
@@ -117,7 +91,7 @@ Outbound: All traffic allowed
 
 Screenshot:
 
-!(screenshots/security-groups.png)→ Shows security group rules in AWS console
+![Shows security group rules in AWS console](screenshots/security-groups.png)
 
 Information:
 Security groups act as a virtual firewall. By opening only required ports, we maintain security.
@@ -132,7 +106,8 @@ The security group created earlier was attached to allow web and SSH access.
 
 Screenshot:
 
-(screenshots/ec2.png) → Shows EC2 instance running
+![Shows EC2 instance running
+](screenshots/ec2.png)
 
 Information:
 EC2 provides scalable compute resources. Using a key pair ensures secure access without passwords.
@@ -145,9 +120,9 @@ Bucket versioning was enabled to track changes over time.
 
 Screenshot:
 
-!(screenshots/s3.png) → show s3 bucket
+![show s3 bucket](screenshots/s3.png)
 
-!(screenshots/s3-backend-seting.png) → Shows Configuration
+![ Shows Configuration](screenshots/s3-backend-seting.png)
 
 Information:
 Storing state in S3 centralizes infrastructure information. This avoids conflicts and keeps the repo clean.
@@ -160,9 +135,9 @@ Ensures only one person modifies infrastructure at a time.
 
 Screenshot:
 
-(screenshots/dynamodb.png)→ create DynamoDB table for lock management
+![Create DynamoDB table for lock management](screenshots/dynamodb.png)
 
-!(screenshots/lock-dynamodb.png)→ Shows DynamoDB table for lock management
+![Shows DynamoDB table for lock management](screenshots/lock-dynamodb.png)
 
 Information:
 State locking prevents simultaneous Terraform runs that could corrupt the state.
@@ -175,15 +150,15 @@ The second terminal shows a lock error, proving the locking works.
 
 Screenshot:
 
-!(screenshots/locking.png) → Shows lock removal in AWS console
+![ Shows lock removal in AWS console](screenshots/locking.png)
 
 Unlock: Use force unlock command in Terraform or remove lock manually in DynamoDB.
  terraform force-unlock <LOCK_ID>
 
 Screenshot:
 
-!(screenshots/force-unlock.png) → Shows lock removal in AWS console
-
+![Shows lock removal in AWS console
+](screenshots/force-unlock.png) 
 
 Information:
 Locking ensures consistency and safe collaboration in multi-user environments.
@@ -206,7 +181,7 @@ Terraform state files should never be version-controlled because:
 
 Screenshot:
 
-!(screenshots/state_view_in_s3.png) → Shows Terraform state stored safely in S3
+![Shows Terraform state stored safely in S3](screenshots/state_view_in_s3.png)
 
 
 Configure AWS credentials:
@@ -237,27 +212,13 @@ key_name         = "terraform-key"
 public_key_path  = "~/.ssh/terraform-key.pub"
 
 
-
 🚀 Usage
 
-Initialize Terraform:
+terraform init     # Initialize Terraform
+terraform plan     # Preview infrastructure
+terraform apply    # Apply changes
+terraform destroy  # Destroy resources
 
-terraform init
-
-
-Plan the infrastructure:
-
-terraform plan
-
-
-Apply changes:
-
-terraform apply
-
-
-Destroy resources:
-
-terraform destroy
 
 
 📌 State Management
@@ -281,43 +242,14 @@ Why DynamoDB Locking?
 
 
 🛠️ Troubleshooting
-Check existing locks
+Check existing locks: 
 aws dynamodb scan --table-name state-lock
+
 
 Delete corrupted lock
 aws dynamodb delete-item \
   --table-name state-lock \
   --key '{"LockID": {"S": "s3statebackend2/global/mystatefile/terraform.tfstate"}}'
-
-
-IAM Permissions
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:DeleteObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::s3statebackend2",
-        "arn:aws:s3:::s3statebackend2/*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "dynamodb:GetItem",
-        "dynamodb:PutItem",
-        "dynamodb:DeleteItem"
-      ],
-      "Resource": "arn:aws:dynamodb:*:*:table/state-lock"
-    }
-  ]
-}
 
 
 
