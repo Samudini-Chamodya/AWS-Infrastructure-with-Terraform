@@ -153,64 +153,64 @@ terraform {
 ## Configure AWS credentials:
 ```aws configure```
 
-### 📑 Variables (terraform.tfvars)
 
-aws_region       = "us-east-1"
-instance_type    = "t2.micro"
-ami_id           = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI
-key_name         = "terraform-key"
-public_key_path  = "~/.ssh/terraform-key.pub"
+## 📑 Variables (`terraform.tfvars`)
 
-### 🚀 Usage
+```hcl
+aws_region      = "us-east-1"
+instance_type   = "t2.micro"
+ami_id          = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI
+key_name        = "terraform-key"
+public_key_path = "~/.ssh/terraform-key.pub"
+```
 
+## 🚀 Usage
+
+```bash
 terraform init     # Initialize Terraform
 terraform plan     # Preview infrastructure
 terraform apply    # Apply changes
 terraform destroy  # Destroy resources
+```
 
-###📌 State Management
+## 📌 State Management
 
-Why S3 Backend?
+### Why S3 Backend?
 
--✅ Remote storage accessible by team
+- ✅ Remote storage accessible by team  
+- ✅ Versioning support for rollback  
+- ✅ High durability and availability  
+- ✅ Secure (encryption at rest)  
 
--✅ Versioning support for rollback
+### Why DynamoDB Locking?
 
--✅ High durability and availability
-
--✅ Secure (encryption at rest)
-
-Why DynamoDB Locking?
-
--✅ Prevents concurrent operations on state
-
--✅ Ensures consistency across team members
-
--✅ Automatically releases locks when done
+- ✅ Prevents concurrent operations on state  
+- ✅ Ensures consistency across team members  
+- ✅ Automatically releases locks when done
 
 ## 🛠️ Troubleshooting
 
-Check existing locks:
+**Check existing locks:**
 
-```aws dynamodb scan --table-name state-lock```
+```bash
+aws dynamodb scan --table-name state-lock
+```
 
-
-Delete corrupted lock:
-
+***Delete corrupted lock:**
+``` bash
 aws dynamodb delete-item \
   --table-name state-lock \
   --key '{"LockID": {"S": "s3statebackend2/global/mystatefile/terraform.tfstate"}}'
+```
+## 🤝 Contributing
 
-##🤝 Contributing
+1. Fork the repository  
+2. Create a feature branch  
+3. Make your changes  
+4. Test your changes  
+5. Submit a Pull Request
 
--Fork the repository
 
--Create a feature branch
 
--Make your changes
-
--Test your changes
-
--Submit a Pull Request
 
 
