@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertainment Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            margin-bottom: 0.5rem;
+            color: #667eea;
+        }
+
+        .card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Featured Section */
+        .featured {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .featured h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        /* Music Player Style */
+        .music-player {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .play-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .play-btn:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 5px;
+            background: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #667eea;
+            width: 30%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">🎭 Entertainment Hub</a>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-section="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-section="dance">Dance</a></li>
+                <li><a href="#" class="nav-link" data-section="music">Music</a></li>
+                <li><a href="#" class="nav-link" data-section="movie">Movie</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Home Section -->
+        <section id="home" class="content-section active">
+            <div class="hero">
+                <h1>Welcome to Entertainment Hub</h1>
+                <p>Your ultimate destination for movies, music, and dance entertainment</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <img src="https://picsum.photos/seed/dance1/400/200.jpg" alt="Dance" class="card-image">
+                    <div class="card-content">
+                        <h3>🕺 Dance</h3>
+                        <p>Explore various dance styles from around the world. From classical to contemporary, find your rhythm!</p>
+                        <button class="btn" onclick="showSection('dance')">Explore Dance</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="https://picsum.photos/seed/music1/400/200.jpg" alt="Music" class="card-image">
+                    <div class="card-content">
+                        <h3>🎵 Music</h3>
+                        <p>Discover new artists, listen to your favorite songs, and explore different music genres.</p>
+                        <button class="btn" onclick="showSection('music')">Listen Now</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="https://picsum.photos/seed/movie1/400/200.jpg" alt="Movies" class="card-image">
+                    <div class="card-content">
+                        <h3>🎬 Movies</h3>
+                        <p>Watch the latest blockbusters, classic films, and everything in between. Your cinema awaits!</p>
+                        <button class="btn" onclick="showSection('movie')">Watch Movies</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dance Section -->
+        <section id="dance" class="content-section">
+            <div class="hero">
+                <h1>🕺 Dance World</h1>
+                <p>Move to the rhythm of life</p>
+            </div>
+
+            <div class="featured">
+                <h2>Featured Dance Styles</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <img src="https://picsum.photos/seed/ballet/400/200.jpg" alt="Ballet" class="card-image">
+                        <div class="card-content">
+                            <h3>Ballet</h3>
+                            <p>Classical elegance and grace in motion</p>
+                            <button class="btn">Learn More</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="https://picsum.photos/seed/hiphop/400/200.jpg" alt="Hip Hop" class="card-image">
+                        <div class="card-content">
+                            <h3>Hip Hop</h3>
+                            <p>Urban culture expressed through movement</p>
+                            <button class="btn">Learn More</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="https://picsum.photos/seed/salsa/400/200.jpg" alt="Salsa" class="card-image">
+                        <div class="card-content">
+                            <h3>Salsa</h3>
+                            <p>Passionate Latin rhythms that make you move</p>
+                            <button class="btn">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured">
+                <h2>Upcoming Dance Events</h2>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>International Dance Festival 2024</h3>
+                        <p>Join us for a celebration of dance from around the world. Featuring workshops, performances, and competitions.</p>
+                        <p><strong>Date:</strong> March 15-17, 2024</p>
+                        <button class="btn">Register Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Music Section -->
+        <section id="music" class="content-section">
+            <div class="hero">
+                <h1>🎵 Music Universe</h1>
+                <p>Soundtrack to your life</p>
+            </div>
+
+            <div class="featured">
+                <h2>Now Playing</h2>
+                <div class="music-player">
+                    <h3>Midnight Dreams</h3>
+                    <p>Artist: Luna Star</p>
+                    <div class="player-controls">
+                        <button class="play-btn">▶</button>
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                        <span>2:45 / 4:20</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured">
+                <h2>Popular Playlists</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <img src="https://picsum.photos/seed/pop/400/200.jpg" alt="Pop Hits" class="card-image">
+                        <div class="card-content">
+                            <h3>Pop Hits 2024</h3>
+                            <p>The biggest pop songs right now</p>
+                            <button class="btn">Play</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="https://picsum.photos/seed/chill/400/200.jpg" alt="Chill Vibes" class="card-image">
+                        <div class="card-content">
+                            <h3>Chill Vibes</h3>
+                            <p>Relax and unwind with smooth tunes</p>
+                            <button class="btn">Play</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="https://picsum.photos/seed/workout/400/200.jpg" alt="Workout" class="card-image">
+                        <div class="card-content">
+                            <h3>Workout Energy</h3>
+                            <p>High-energy tracks for your fitness routine</p>
+                            <button class="btn">Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured">
+                <h2>New Releases</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Electric Nights</h3>
+                            <p>Artist: Neon Pulse</p>
+                            <p>Genre: Electronic</p>
+                            <button class="btn">Listen</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Acoustic Sessions</h3>
+                            <p>Artist: River Stone</p>
+                            <p>Genre: Folk</p>
+                            <button class="btn">Listen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Movie Section -->
+        <section id="movie" class="content-section">
+            <div class="hero">
+                <h1>🎬 Cinema Central</h1>
+                <p>Lights, camera, action!</p>
+            </div>
+
+            <div class="featured">
+                <h2>Now Showing</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <img src="https://picsum.photos/seed/movie2/400/200.jpg" alt="Stellar Journey" class="card-image">
+                        <div class="card-content">
+                            <h3>Stellar Journey</h3>
+                            <p>Genre: Sci-Fi Adventure</p>
+                            <p>Rating: ⭐⭐⭐⭐⭐</p>
+                            <button class="btn">Book Tickets</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="https://picsum.photos/seed/movie3/400/200.jpg" alt="The Last Dance" class="card-image">
+                        <div class="card-content">
+                            <h3>The Last Dance</h3>
+                            <p>Genre: Drama</p>
+                            <p>Rating: ⭐⭐⭐⭐</p>
+                            <button class="btn">Book Tickets</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="https://picsum.photos/seed/movie4/400/200.jpg" alt="Comedy Night" class="card-image">
+                        <div class="card-content">
+                            <h3>Comedy Night Live</h3>
+                            <p>Genre: Comedy</p>
+                            <p>Rating: ⭐⭐⭐⭐</p>
+                            <button class="btn">Book Tickets</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured">
+                <h2>Coming Soon</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Dragon's Legacy</h3>
+                            <p>Release Date: April 5, 2024</p>
+                            <p>An epic fantasy adventure that will take your breath away</p>
+                            <button class="btn">Set Reminder</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>City of Dreams</h3>
+                            <p>Release Date: April 12, 2024</p>
+                            <p>A romantic drama set in the bustling streets of New York</p>
+                            <button class="btn">Set Reminder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured">
+                <h2>Movie Categories</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Action & Adventure</h3>
+                            <p>Heart-pounding excitement awaits</p>
+                            <button class="btn">Browse</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Romance</h3>
+                            <p>Love stories that touch your heart</p>
+                            <button class="btn">Browse</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Horror</h3>
+                            <p>Thrills and chills for the brave</p>
+                            <button class="btn">Browse</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionName).classList.add('active');
+
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === sectionName) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Add click event listeners to navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                showSection(section);
+            });
+        });
+
+        // Music player simulation
+        document.querySelectorAll('.play-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent === '▶') {
+                    this.textContent = '⏸';
+                    // Simulate progress
+                    const progressBar = this.parentElement.querySelector('.progress');
+                    if (progressBar) {
+                        let width = 30;
+                        const interval = setInterval(() => {
+                            if (width >= 100) {
+                                clearInterval(interval);
+                                this.textContent = '▶';
+                                width = 30;
+                                progressBar.style.width = width + '%';
+                            } else if (this.textContent === '⏸') {
+                                width += 1;
+                                progressBar.style.width = width + '%';
+                            } else {
+                                clearInterval(interval);
+                            }
+                        }, 100);
+                    }
+                } else {
+                    this.textContent = '▶';
+                }
+            });
+        });
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>
